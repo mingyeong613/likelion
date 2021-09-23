@@ -8,8 +8,8 @@ idx = 0
 display_num = 100
 start_num = 1
 
-client_id = 'RvAYqUfDDvVY1y74bOBj' #클라이언트 아이디
-client_secret = 'K4T9AyHZ5N' #클라이언트 시크릿
+client_id = '_______' #클라이언트 아이디
+client_secret = '________' #클라이언트 시크릿
 
 url = 'https://openapi.naver.com/v1/search/book.json'
 params = {'display': display_num, 'start': start_num,
