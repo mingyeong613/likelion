@@ -1,0 +1,51 @@
+import json
+import requests
+import re
+
+keyword = '강아지' #원하는 키워드
+sort = 'count'  # count : 판매량
+idx = 0
+display_num = 100
+start_num = 1
+
+client_id = 'RvAYqUfDDvVY1y74bOBj' #클라이언트 아이디
+client_secret = 'K4T9AyHZ5N' #클라이언트 시크릿
+
+url = 'https://openapi.naver.com/v1/search/book.json'
+params = {'display': display_num, 'start': start_num,
+          'query': keyword.encode('utf-8'), 'sort': sort}
+headers = {'X-Naver-Client-Id': client_id,
+           'X-Naver-Client-Secret': client_secret, }
+    
+r = requests.get(url, headers=headers,  params=params)
+rescode = r.status_code
+
+def search_book(title):
+    if(rescode == 200):
+        return r.content.decode('utf-8')
+    else :
+        return None
+
+def main():
+    #검색 결과를 json개체로 로딩
+    json_response = json.loads(r.content.decode('utf-8'))
+    if(json_response == None):
+        print("json.loads 실패!!!")
+        exit()
+ 
+    #검색 결과의 items 목록의 각 항목(post)을 출력
+    for item in json_response['items']:
+        remove_tag = re.compile('<.*?>')
+        print("제목: "+ re.sub(remove_tag, '', item['title']))
+        print("이미지: "+item['image'])
+        print("작가: "+item['author'])
+        print("출판사: "+item['publisher'])
+        print("출판일: "+item['pubdate'])
+        print("가격: "+item['price'],end="")
+        print('(할인가: '+item['discount']+')')
+        print("url: "+item['link'])
+        print("================\n")
+ 
+#진입점 함수를 main으로 지정
+if __name__ == '__main__':
+    main()
